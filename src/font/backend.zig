@@ -27,6 +27,10 @@ pub const Backend = enum {
     /// supports).
     web_canvas,
 
+    /// DirectWrite for font discovery, FreeType for rendering, and
+    /// HarfBuzz for shaping (Windows).
+    directwrite_harfbuzz,
+
     /// Returns the default backend for a build environment. This is
     /// meant to be called at comptime by the build.zig script. To get the
     /// backend look at build_options.
@@ -43,7 +47,9 @@ pub const Backend = enum {
         // macOS also supports "coretext_freetype" but there is no scenario
         // that is the default. It is only used by people who want to
         // self-compile Ghostty and prefer the freetype aesthetic.
-        return if (target.os.tag.isDarwin()) .coretext else .fontconfig_freetype;
+        if (target.os.tag.isDarwin()) return .coretext;
+        if (target.os.tag == .windows) return .directwrite_harfbuzz;
+        return .fontconfig_freetype;
     }
 
     // All the functions below can be called at comptime or runtime to
@@ -54,6 +60,7 @@ pub const Backend = enum {
             .freetype,
             .fontconfig_freetype,
             .coretext_freetype,
+            .directwrite_harfbuzz,
             => true,
 
             .coretext,
@@ -74,6 +81,7 @@ pub const Backend = enum {
 
             .freetype,
             .fontconfig_freetype,
+            .directwrite_harfbuzz,
             .web_canvas,
             => false,
         };
@@ -88,6 +96,7 @@ pub const Backend = enum {
             .coretext_freetype,
             .coretext_harfbuzz,
             .coretext_noshape,
+            .directwrite_harfbuzz,
             .web_canvas,
             => false,
         };
@@ -99,9 +108,25 @@ pub const Backend = enum {
             .fontconfig_freetype,
             .coretext_freetype,
             .coretext_harfbuzz,
+            .directwrite_harfbuzz,
             => true,
 
             .coretext,
+            .coretext_noshape,
+            .web_canvas,
+            => false,
+        };
+    }
+
+    pub fn hasDirectwrite(self: Backend) bool {
+        return switch (self) {
+            .directwrite_harfbuzz => true,
+
+            .freetype,
+            .fontconfig_freetype,
+            .coretext,
+            .coretext_freetype,
+            .coretext_harfbuzz,
             .coretext_noshape,
             .web_canvas,
             => false,

@@ -39,6 +39,7 @@ pub const Renderer = switch (build_config.renderer) {
     .metal => GenericRenderer(Metal),
     .opengl => GenericRenderer(OpenGL),
     .webgl => WebGL,
+    .direct3d11 => GenericRenderer(OpenGL), // TODO: replace with D3D11 renderer
 };
 
 /// The health status of a renderer. These must be shared across all

@@ -43,6 +43,7 @@ pub const runtime = switch (build_config.artifact) {
     .exe => switch (build_config.app_runtime) {
         .none => none,
         .gtk => gtk,
+        .win32 => none, // TODO: replace with win32 apprt module
     },
     .lib => embedded,
     .wasm_module => browser,

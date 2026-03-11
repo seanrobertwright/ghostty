@@ -15,6 +15,7 @@ const log = std.log.scoped(.discovery);
 pub const Discover = switch (options.backend) {
     .freetype => void, // no discovery
     .fontconfig_freetype => Fontconfig,
+    .directwrite_harfbuzz => void, // TODO: DirectWrite discovery
     .web_canvas => void, // no discovery
     .coretext,
     .coretext_freetype,
