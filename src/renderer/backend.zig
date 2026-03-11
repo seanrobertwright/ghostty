@@ -5,6 +5,7 @@ const WasmTarget = @import("../os/wasm/target.zig").Target;
 pub const Backend = enum {
     opengl,
     metal,
+    direct3d11,
     webgl,
     direct3d11,
 
