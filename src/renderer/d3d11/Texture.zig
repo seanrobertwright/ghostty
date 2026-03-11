@@ -3,6 +3,23 @@ const Self = @This();
 
 const std = @import("std");
 
+pub const Format = enum {
+    rgba,
+    bgra,
+    red,
+    srgba,
+};
+
+pub const Filter = enum {
+    nearest,
+    linear,
+};
+
+pub const WrapMode = enum {
+    clamp_to_edge,
+    repeat,
+};
+
 /// Options for initializing a texture.
 pub const Options = struct {
     format: Format = .rgba,
@@ -10,28 +27,7 @@ pub const Options = struct {
     mag_filter: Filter = .linear,
     wrap_s: WrapMode = .clamp_to_edge,
     wrap_t: WrapMode = .clamp_to_edge,
-
-    pub const Format = enum {
-        rgba,
-        bgra,
-        red,
-        srgba,
-    };
-
-    pub const Filter = enum {
-        nearest,
-        linear,
-    };
-
-    pub const WrapMode = enum {
-        clamp_to_edge,
-        repeat,
-    };
 };
-
-pub const Format = Options.Format;
-pub const Filter = Options.Filter;
-pub const WrapMode = Options.WrapMode;
 
 /// The width of this texture.
 width: usize,
