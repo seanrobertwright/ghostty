@@ -554,7 +554,7 @@ pub fn add(
         if (self.config.flatpak) step.linkSystemLibrary2("gtk4", dynamic_link_opts);
 
         switch (self.config.app_runtime) {
-            .none => {},
+            .none, .win32 => {},
             .gtk => try self.addGtkNg(step),
             .win32 => {}, // TODO: add win32 apprt dependencies
         }
