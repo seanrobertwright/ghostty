@@ -470,6 +470,18 @@ pub fn add(
         }
     }
 
+    // Windows system libraries
+    if (target.result.os.tag == .windows) {
+        step.linkSystemLibrary2("d3d11", .{});
+        step.linkSystemLibrary2("dxgi", .{});
+        step.linkSystemLibrary2("d3dcompiler_47", .{});
+        step.linkSystemLibrary2("user32", .{});
+        step.linkSystemLibrary2("gdi32", .{});
+        step.linkSystemLibrary2("shell32", .{});
+        step.linkSystemLibrary2("ole32", .{});
+        step.linkSystemLibrary2("dwmapi", .{});
+    }
+
     // cimgui
     if (b.lazyDependency("dcimgui", .{
         .target = target,
@@ -544,6 +556,7 @@ pub fn add(
         switch (self.config.app_runtime) {
             .none => {},
             .gtk => try self.addGtkNg(step),
+            .win32 => {}, // TODO: add win32 apprt dependencies
         }
     }
 
